@@ -1,6 +1,18 @@
 const TelegramBot = require('node-telegram-bot-api');
-const config = require('./config/config.json')
 const bb = require('bot-brother');
+const firebase = require("firebase-admin");
+
+const config = require('./config/config.json');
+const serviceAccount = require("./config/serviceAccountKey.json");
+const fbFunc = require('./firebaseFunctions.js')
+
+// initializing firebase connection
+firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: "https://askcoditest.firebaseio.com"
+});
+const db = firebase.firestore();
+// initializing application
 const bot = bb({
   key: config.apikey,
   sessionManager: bb.sessionManager.memory(),
@@ -10,9 +22,13 @@ const bot = bb({
 ///start command
 bot.command('start')
 .invoke(function (ctx) {
-  // Setting data, data is used in text message templates.
-  ctx.data.user = ctx.meta.user;
-  console.log('user data: ',ctx.meta.user);
+    // Setting data, data is used in text message templates.
+    ctx.data.user = ctx.meta.user;
+
+    var username = ctx.meta.user.username;
+    let charID = ctx.meta.user.id;
+    fbFunc.checkIfusernameExists(db,username);
+
   // Invoke callback must return promise.
   return ctx.sendMessage('Hello <%=user.first_name%>. How are you?');
 })
@@ -33,3 +49,14 @@ bot.command('upload_photo')
   // See https://core.telegram.org/bots/api#message
   return ctx.sendPhoto(ctx.message.photo[0].file_id, {caption: 'I got your photo!'});
 });
+
+
+// sending test
+// function sendMessageEvery5sec() {
+//     // bot.use('before', function (ctx) {
+//     //   ctx.sendMessage('hello hello hello');
+//     // });
+//     console.log('message sent');
+//     bot.sendMessage('this is the message');
+// }
+// setInterval(sendMessageEvery5sec, 5000);
