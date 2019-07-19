@@ -1,0 +1,19 @@
+{
+  "name": "telegramchatbottest",
+  "version": "1.0.0",
+  "description": "test for telegram chatbot implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkaHitsuji/telegramChatbotTest.git"
+  },
+  "author": "Ang Yang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AkaHitsuji/telegramChatbotTest/issues"
+  },
+  "homepage": "https://github.com/AkaHitsuji/telegramChatbotTest#readme"
+}
