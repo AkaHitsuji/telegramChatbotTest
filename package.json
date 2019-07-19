@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/AkaHitsuji/telegramChatbotTest/issues"
   },
-  "homepage": "https://github.com/AkaHitsuji/telegramChatbotTest#readme"
+  "homepage": "https://github.com/AkaHitsuji/telegramChatbotTest#readme",
+  "dependencies": {
+    "bot-brother": "^2.1.5",
+    "node-telegram-bot-api": "^0.30.0"
+  }
 }
