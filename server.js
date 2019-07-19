@@ -25,9 +25,20 @@ bot.command('start')
     // Setting data, data is used in text message templates.
     ctx.data.user = ctx.meta.user;
 
-    var username = ctx.meta.user.username;
+    let username = ctx.meta.user.username;
     let charID = ctx.meta.user.id;
-    fbFunc.checkIfusernameExists(db,username);
+    let dbContainsUser;
+    fbFunc.checkIfusernameExists(db,username).then(function(res) {
+        console.log('this is the result: ',res);
+        dbContainsUser = res;
+        if(res) {
+            //TODO: check if contains chatID, if yes continue, if no add chatID into database
+        }
+        else {
+            //TODO: inform user that they have accessed the chatbot.
+            //Message: welcome to codeIT Suisse. Please register for the competition via: link
+        }
+    });
 
   // Invoke callback must return promise.
   return ctx.sendMessage('Hello <%=user.first_name%>. How are you?');
