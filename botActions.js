@@ -12,11 +12,22 @@ module.exports.start = (bot, db) => {
       let dbContainsUser;
       fbFunc.checkIfusernameExists(db,username).then(function(res) {
           console.log('this is the result: ',res);
-          dbContainsUser = res;
           if(res) {
-              //TODO: check if contains chatID, if yes continue, if no add chatID into database
+              const {chatID} = res;
+              if (chatID.length === 0) {
+                //add chatID into database
+                console.log(username)
+                fbFunc.addIdToDatabase(db, username, charID).then((res) => {
+                  ctx.sendMessage('Your username has been registered.')
+                })
+                .catch((err) => {
+                  console.log(err)
+                  ctx.sendMessage('Error in processing your data, try again.')
+                })
+              }
           }
           else {
+            ctx.sendMessage('Hello <%user.first_name%>, welcome to codeIT Suisse. You have not registered for the competition yet.')
               //TODO: inform user that they have accessed the chatbot.
               //Message: welcome to codeIT Suisse. Please register for the competition via: link
           }

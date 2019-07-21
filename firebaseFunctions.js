@@ -1,17 +1,17 @@
 const serviceAccount = require('./config/serviceAccountKey.json');
 const firebase = require('firebase-admin');
 
-exports.checkIfusernameExists = (db,username) => {
+module.exports.checkIfusernameExists = (db,username) => {
     return new Promise((resolve, reject) => {
         let cityRef = db.collection('participants').doc(username);
         let getDoc = cityRef.get()
           .then(doc => {
             if (!doc.exists) {
               console.log('No such document!');
-              resolve(false);
+              resolve(null);
             } else {
               console.log('Document data:', doc.data());
-              resolve(true);
+              resolve(doc.data());
             }
           })
           .catch(err => {
@@ -20,4 +20,19 @@ exports.checkIfusernameExists = (db,username) => {
         return getDoc;
     })
 
+}
+
+module.exports.addIdToDatabase = (db, name, charID) => {
+  return new Promise((resolve, reject) => {
+    let cityRef = db.collection('participants').doc(name);
+
+    return cityRef.update({
+      chatID: charID
+    }).then(() => resolve(true))
+    .catch((err) => {
+      console.log(err)
+      resolve(false)
+    });
+
+  })
 }
