@@ -6,7 +6,7 @@ const bb = require('bot-brother');
 const {db, bot} = require('./init.js');
 
 //import commands from botActions
-const {start, uploadPhoto} = require('./botActions.js');
+const {start, uploadPhoto} = require('./botActions');
 
 start(bot, db);
 uploadPhoto(bot);

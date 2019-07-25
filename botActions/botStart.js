@@ -1,6 +1,6 @@
-const fbFunc = require('./firebaseFunctions.js');
+const fbFunc = require('../firebaseFunctions.js');
 
-module.exports.start = (bot, db) => {
+ module.exports = (bot, db) => {
   ///start command
   bot.command('start')
   .invoke(function (ctx) {
@@ -40,18 +40,5 @@ module.exports.start = (bot, db) => {
     ctx.data.answer = ctx.answer;
     // Returns promise.
     return ctx.sendMessage('OK. I understood. You feel <%=answer%>');
-  });
-}
-
-module.exports.uploadPhoto = (bot) => {
-  // Creating command '/upload_photo'.
-  bot.command('upload_photo')
-  .invoke(function (ctx) {
-    return ctx.sendMessage('Drop me a photo, please');
-  })
-  .answer(function (ctx) {
-    // ctx.message is an object that represents Message.
-    // See https://core.telegram.org/bots/api#message
-    return ctx.sendPhoto(ctx.message.photo[0].file_id, {caption: 'I got your photo!'});
   });
 }
