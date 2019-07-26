@@ -20,4 +20,5 @@ module.exports.bot = bb({
   polling: { interval: 0, timeout: 1 }
 });
 
+// telebot used for functions not available on bot-brother e.g. sending messages to other chats
 module.exports.teleBot = new TelegramBot(apikey, {polling:false})

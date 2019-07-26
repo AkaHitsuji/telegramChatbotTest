@@ -9,9 +9,9 @@ const sleep = (ms) => {
 //wraps asynchronous sendMessage function so that we can use it in main body
 const sendMessage = async (teleBot, ids, message) => {
   const idArray = ids.map(async id => {
+    const {mute, chatID} = id
     await sleep(300)
-    console.log(id)
-    return await teleBot.sendMessage(id, message)
+    return await teleBot.sendMessage(chatID, message, {disable_notification: mute})
   })
   return await Promise.all(idArray);
 }
