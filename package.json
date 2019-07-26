@@ -20,6 +20,5 @@
     "bot-brother": "^2.1.5",
     "firebase-admin": "^8.2.0",
     "node-telegram-bot-api": "^0.30.0"
-  },
-  "eslintConfig": {}
+  }
 }

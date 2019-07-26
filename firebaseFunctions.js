@@ -1,38 +1,73 @@
 const serviceAccount = require('./config/serviceAccountKey.json');
 const firebase = require('firebase-admin');
 
-module.exports.checkIfusernameExists = (db,username) => {
-    return new Promise((resolve, reject) => {
-        let cityRef = db.collection('participants').doc(username);
-        let getDoc = cityRef.get()
-          .then(doc => {
-            if (!doc.exists) {
-              console.log('No such document!');
-              resolve(null);
-            } else {
-              console.log('Document data:', doc.data());
-              resolve(doc.data());
-            }
-          })
-          .catch(err => {
-            console.log('Error getting document', err);
-          });
-        return getDoc;
-    })
+module.exports.checkIfusernameExists = async (db,username) => {
+    const participantRef = db.collection('participants').doc(username);
+    let getDoc = await participantRef.get()
+    if (!getDoc.exists) {
+      // check if user is organiser
+      const orgRef = db.collection('organisers').doc(username);
+      let orgDoc = await orgRef.get();
+      if (!orgDoc.exists) {
+        return null;
+      } else {
+        const data = orgDoc.data();
+
+        return {data, role:'organiser'};
+      }
+    } else {
+      const data = getDoc.data();
+      return {data, role: 'participant'};
+    }
+}
+
+
+module.exports.addIdToDatabase = async (db, name, role, charID) => {
+  let docRef = db.collection(`${role}s`).doc(name);
+  try {
+    let updated = await docRef.update({chatID: charID});
+    return updated;
+  } catch(err) {
+    console.log(err);
+    return err;
+  }
 
 }
 
-module.exports.addIdToDatabase = (db, name, charID) => {
-  return new Promise((resolve, reject) => {
-    let cityRef = db.collection('participants').doc(name);
+module.exports.checkIfOrganiser = async (db, username) => {
+  const orgRef = db.collection('organisers').doc(username);
+  let orgDoc = await orgRef.get();
+  if (!orgDoc.exists) {
+    return false;
+  } else {
+    return true;
+  }
+}
 
-    return cityRef.update({
-      chatID: charID
-    }).then(() => resolve(true))
-    .catch((err) => {
-      console.log(err)
-      resolve(false)
-    });
+module.exports.getParticipantList = async (db) => {
+  const partRef = db.collection('participants')
+  try {
+    let allDocs = await partRef.get();
+    let res = []
+    allDocs.forEach((doc) => {
+      let indivDoc = doc.data()
+      if (indivDoc.chatID !== '') {
+        res.push(indivDoc.chatID)
+      }
+    })
+    return res
+  } catch (err) {
+    console.log(err)
+  }
+}
 
-  })
+module.exports.removeChatID = async (db, username) => {
+  const partRef = db.collection('participants').doc(username);
+  try {
+    let updated = await partRef.update({chatID: ''});
+    return updated;
+  } catch(err) {
+    console.log(err);
+    return err;
+  }
 }

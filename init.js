@@ -19,3 +19,5 @@ module.exports.bot = bb({
   sessionManager: bb.sessionManager.memory(),
   polling: { interval: 0, timeout: 1 }
 });
+
+module.exports.teleBot = new TelegramBot(apikey, {polling:false})

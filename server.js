@@ -3,14 +3,15 @@ const bb = require('bot-brother');
 
 
 // import db and bot from init file
-const {db, bot} = require('./init.js');
+const {db, bot, teleBot} = require('./init.js');
 
 //import commands from botActions
-const {start, uploadPhoto} = require('./botActions.js');
+const {start, uploadPhoto, botOrgBroadcast, stopBot} = require('./botActions');
 
 start(bot, db);
 uploadPhoto(bot);
-
+botOrgBroadcast(bot, db, teleBot)
+stopBot(bot, db);
 // sending test
 // function sendMessageEvery5sec() {
 //     // bot.use('before', function (ctx) {
