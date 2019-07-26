@@ -1,2 +1,4 @@
-module.exports.start = require('./botStart.js');
-module.exports.uploadPhoto = require('./botUploadPhoto.js');
+module.exports.start = require('./botStart');
+module.exports.uploadPhoto = require('./botUploadPhoto');
+module.exports.botOrgBroadcast = require('./botOrgBroadcast');
+module.exports.stopBot = require('./stopBot');
