@@ -17,6 +17,7 @@ https://github.com/SerjoPepper/bot-brother
 | ~~/broadcast message~~  | ~~send message to all. text followed by command contains the message to be sent~~  |
 | /stats teamName  | retrieve statistics for team. text followed by command contains the team name to be retrieved  |
 | /leaderboard  | View competition leaderboard  |
+| /startTime  | start the 24 hour timer |
 
 ## Participant
 
@@ -24,7 +25,7 @@ https://github.com/SerjoPepper/bot-brother
 | ------------- | ------------- |
 | ~~/start~~  | ~~welcome message + map chatID to participant + gateway to turn away non-participants~~  |
 | /help  | instructions for participants, list of commands available  |
-| /timeleft  | time left for competition  |
+| /timeLeft  | check time left for competition  |
 | ~~/mute~~  | ~~disable push notifications~~  |
 | /leaderboard  | retrieve competition leaderboard  |
 | /stats  | retrieve team statistics (eg. position, number of submissions etc.)  |
