@@ -41,9 +41,4 @@ module.exports = (bot, db, teleBot) => {
       sendMessage(teleBot, res, ctx.message.text).then(res => ctx.sendMessage('Broadcast sent.'))
     })
   })
-
-  bot.command('unauthorized')
-  .invoke(function(ctx) {
-    return ctx.sendMessage('You are unauthorized to do so.')
-  })
 }
