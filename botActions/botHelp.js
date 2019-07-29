@@ -2,28 +2,31 @@ const fbFunc = require('../firebaseFunctions.js');
 
  module.exports = (bot, db) => {
   ///start command
-  bot.command('start')
+  bot.command('help')
   .invoke(function (ctx) {
-      // Setting data, data is used in text message templates.
       ctx.data.user = ctx.meta.user;
       let username = ctx.meta.user.username;
       let charID = ctx.meta.user.id;
       const data = fbFunc.checkIfusernameExists(db, username).then(({data, role}) => {
           const {chatID, name} = data;
           console.log(data);
-          if (chatID.length === 0) {
-              //add chatID into database
-              fbFunc.addIdToDatabase(db, username, role, charID).then(res => {
-                ctx.sendMessage(`Hello ${name}, your information as a ${role} has been registered.`)
-              })
+          if (chatID.length > 0) {
+              if (role === 'organiser') {
+                return ctx.sendMessage(organiserHelpMessage)
+              }
+              else if (role === 'participant') {
+                return ctx.sendMessage(participantHelpMessage)
+              }
             }
+          else {
+            return ctx.sendMessage(`Hello ${name}, you have not been registered yet. Use the command /start to register.`)
+          }
       }).catch((error) => {
         console.log(error);
         ctx.sendMessage('Error occurred.');
       })
-
-
-      // Invoke callback must return promise.
-      return ctx.sendMessage('Hello I am Codi');
-  })
+  });
 }
+
+const organiserHelpMessage = '';
+const participantHelpMessage = '';
