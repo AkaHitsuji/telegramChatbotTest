@@ -6,12 +6,12 @@ const bb = require('bot-brother');
 const {db, bot, teleBot} = require('./init.js');
 
 //import commands from botActions
-const {start, stop, help, botOrgBroadcast} = require('./botActions');
-
+const {start, stop, help, botOrgBroadcast, timer} = require('./botActions');
 start(bot, db);
 botOrgBroadcast(bot, db, teleBot)
 stop(bot, db);
 help(bot);
+timer(bot, db)
 
 
 // sending test

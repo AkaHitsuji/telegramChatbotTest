@@ -87,3 +87,26 @@ module.exports.muteHandler = async (db, username, isMute) => {
     console.log(err)
   }
 }
+
+module.exports.addStartTime = async (db, epochStartTime) => {
+  let docRef = db.collection('timestamps').doc('compStartTime');
+  try {
+    let updated = await docRef.update({startTime: epochStartTime});
+    return updated;
+  } catch(err) {
+    console.log(err);
+    return err;
+  }
+}
+
+module.exports.getStartTime = async (db) => {
+  let docRef = db.collection('timestamps').doc('compStartTime');
+  try {
+    let timeDoc = await docRef.get();
+    let startTime = timeDoc.data().startTime;
+    return startTime;
+  } catch(err) {
+    console.log(err);
+    return err;
+  }
+}

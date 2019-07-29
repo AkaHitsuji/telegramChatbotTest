@@ -6,7 +6,6 @@ const config = require('./config/config.json');
 const serviceAccount = require('./config/serviceAccountKey.json');
 
 const {apikey, databaseURL} = config;
-
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
   databaseURL
