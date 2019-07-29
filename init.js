@@ -9,8 +9,8 @@ const {apikey, databaseURL} = config;
 
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  databaseAuthVariableOverride: {uid:'admin'},
-  databaseURL
+  databaseAuthVariableOverride: {uid: 'admin'},
+  databaseURL,
 });
 
 module.exports.db = firebase.firestore();
