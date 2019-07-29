@@ -1,4 +1,4 @@
-const fbFunc = require('../firebaseFunctions.js');
+const fbFunc = require('../firebaseFunctions');
 
 //wrapper function to run sleep in array.map
 const sleep = (ms) => {
@@ -9,9 +9,9 @@ const sleep = (ms) => {
 //wraps asynchronous sendMessage function so that we can use it in main body
 const sendMessage = async (teleBot, ids, message) => {
   const idArray = ids.map(async id => {
+    const {mute, chatID} = id
     await sleep(300)
-    console.log(id)
-    return await teleBot.sendMessage(id, message)
+    return await teleBot.sendMessage(chatID, message, {disable_notification: mute})
   })
   return await Promise.all(idArray);
 }
@@ -30,15 +30,11 @@ module.exports = (bot, db, teleBot) => {
   })
   .answer(function(ctx) {
     const message = ctx.data.answer;
-    // console.log(ctx);
-    // fbFunc.getParticipantList(db).then(res => {
-    //   console.log(res);
-    //   sendMessage(ctx, res, message);
-    //
-    // })
+    // cannot send message to multiple people on answer, hence we redirect to another command
     return ctx.go('broadcast_forward')
   })
 
+  // the command that invokes the function to send messages to multiple people
   bot.command('broadcast_forward')
   .invoke(function(ctx) {
     fbFunc.getParticipantList(db).then(res => {
