@@ -52,7 +52,7 @@ module.exports.getParticipantList = async (db) => {
     allDocs.forEach((doc) => {
       let indivDoc = doc.data()
       if (indivDoc.chatID !== '') {
-        res.push(indivDoc.chatID)
+        res.push(indivDoc)
       }
     })
     return res
@@ -69,5 +69,21 @@ module.exports.removeChatID = async (db, username) => {
   } catch(err) {
     console.log(err);
     return err;
+  }
+}
+
+module.exports.muteHandler = async (db, username, isMute) => {
+  const partRef = db.collection('participants').doc(username);
+  try {
+    let partDoc = await partRef.get();
+    const muteStatus = partDoc.data().mute;
+    if (muteStatus !== isMute) {
+      let updated = await partRef.update({mute: isMute})
+      return 'updated mute status'
+    } else {
+      return `Your mute status is already ${isMute}.`
+    }
+  } catch (err) {
+    console.log(err)
   }
 }

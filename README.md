@@ -25,7 +25,7 @@ https://github.com/SerjoPepper/bot-brother
 | ~~/start~~  | ~~welcome message + map chatID to participant + gateway to turn away non-participants~~  |
 | /help  | instructions for participants, list of commands available  |
 | /timeleft  | time left for competition  |
-| /mute  | disable push notifications  |
+| ~~/mute~~  | ~~disable push notifications~~  |
 | /leaderboard  | retrieve competition leaderboard  |
 | /stats  | retrieve team statistics (eg. position, number of submissions etc.)  |
 | /feedback  | trigger feedback form after competition is over  |

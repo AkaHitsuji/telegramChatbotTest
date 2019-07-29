@@ -1,4 +1,4 @@
-const fbFunc = require('../firebaseFunctions');
+const fbFunc = require('../firebaseFunctions.js');
 
 module.exports = (bot, db) => {
   bot.command('stop')

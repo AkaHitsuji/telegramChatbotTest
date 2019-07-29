@@ -1,4 +1,4 @@
-const fbFunc = require('../firebaseFunctions.js');
+const fbFunc = require('../firebaseFunctions');
 
 module.exports= (bot) => {
   // Creating command '/upload_photo'.
