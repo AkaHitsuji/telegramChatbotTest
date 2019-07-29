@@ -6,13 +6,20 @@ const bb = require('bot-brother');
 const {db, bot, teleBot} = require('./init.js');
 
 //import commands from botActions
-const {start, uploadPhoto, botOrgBroadcast, stopBot, botMute} = require('./botActions');
+const {start, stop, help, botOrgBroadcast} = require('./botActions');
 
 start(bot, db);
-stopBot(bot, db);
+botOrgBroadcast(bot, db, teleBot)
+stop(bot, db);
+help(bot);
 
-uploadPhoto(bot);
-botOrgBroadcast(bot, db, teleBot);
 
-// botMute contains /mute and /unmute commands
-botMute(bot, db);
+// sending test
+// function sendMessageEvery5sec() {
+//     // bot.use('before', function (ctx) {
+//     //   ctx.sendMessage('hello hello hello');
+//     // });
+//     console.log('message sent');
+//     bot.sendMessage('this is the message');
+// }
+// setInterval(sendMessageEvery5sec, 5000);

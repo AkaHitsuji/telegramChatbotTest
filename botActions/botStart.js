@@ -17,6 +17,9 @@ module.exports = (bot, db) => {
                 ctx.sendMessage(`Hello ${name}, your information as a ${role} has been registered.`)
               })
             }
+      }).catch((error) => {
+        console.log(error);
+        ctx.sendMessage('Error occurred.');
       })
 
 
