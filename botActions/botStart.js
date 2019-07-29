@@ -1,4 +1,4 @@
-const fbFunc = require('../firebaseFunctions.js');
+const fbFunc = require('../firebaseFunctions');
 
 module.exports = (bot, db) => {
   ///start command
@@ -20,7 +20,7 @@ module.exports = (bot, db) => {
       })
 
 
-  // Invoke callback must return promise.
-  return ctx.sendMessage('Hello I am Codi');
+      // Invoke callback must return promise.
+      return ctx.sendMessage('Hello I am Codi');
 })
 }
