@@ -1,5 +1,5 @@
 const fbFunc = require('../firebaseFunctions.js');
-const { notStartedError, ERROR_MESSAGE } = require('./constants');
+const { notStartedError, ERROR_MESSAGE, PARTICIPANT_HELP_MESSAGE } = require('./constants');
 
 module.exports = (bot, db) => {
   ///start command
@@ -10,7 +10,7 @@ module.exports = (bot, db) => {
       .then(({ data, role }) => {
         const { chatID, name } = data;
         console.log(data);
-        if (chatID.length > 0) {
+        if (typeof chatID === 'number') {
           if (role === 'organiser') {
             return ctx.sendMessage(organiserHelpMessage);
           } else if (role === 'participant') {
@@ -27,5 +27,5 @@ module.exports = (bot, db) => {
   });
 };
 
-const organiserHelpMessage = '';
-const participantHelpMessage = '';
+const organiserHelpMessage = 'asdf';
+const participantHelpMessage = PARTICIPANT_HELP_MESSAGE;
