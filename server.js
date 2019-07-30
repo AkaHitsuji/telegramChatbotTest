@@ -7,7 +7,7 @@ const {db, bot, teleBot} = require('./init');
 
 let {getDifferences, leaderboardDummy, leaderboardDummyOld} = require('./compStats');
 //import commands from botActions
-const {start, stop, help, botOrgBroadcast, unauthorised, botLeaderboard, botSendPositionChange} = require('./botActions');
+const {start, stop, help, botOrgBroadcast, unauthorised, botLeaderboard, botSendPositionChange, timer} = require('./botActions');
 const INTERVAL = 3000;
 
 start(bot, db);
@@ -15,6 +15,7 @@ botOrgBroadcast(bot, db, teleBot);
 botLeaderboard(bot, db, teleBot, leaderboardDummy);
 stop(bot, db);
 help(bot);
+timer(bot, db)
 unauthorised(bot);
 
 setInterval(function(){
