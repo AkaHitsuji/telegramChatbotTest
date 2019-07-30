@@ -108,5 +108,20 @@ module.exports.getStartTime = async (db) => {
   } catch(err) {
     console.log(err);
     return err;
+
+module.exports.getTeamMembers = async (db, team) => {
+  const partRef = db.collection('participants').where("team", "==", team)
+  try {
+    let allDocs = await partRef.get();
+    let res = []
+    allDocs.forEach((doc) => {
+      let indivDoc = doc.data()
+      if (indivDoc.chatID !== '') {
+        res.push(indivDoc)
+      }
+    })
+    return res
+  } catch (err) {
+    console.log(err)
   }
 }

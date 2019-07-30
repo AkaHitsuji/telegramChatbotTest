@@ -8,7 +8,8 @@ const serviceAccount = require('./config/serviceAccountKey.json');
 const {apikey, databaseURL} = config;
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  databaseURL
+  databaseAuthVariableOverride: {uid: 'admin'},
+  databaseURL,
 });
 
 module.exports.db = firebase.firestore();

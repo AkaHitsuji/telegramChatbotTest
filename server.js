@@ -3,16 +3,27 @@ const bb = require('bot-brother');
 
 
 // import db and bot from init file
-const {db, bot, teleBot} = require('./init.js');
+const {db, bot, teleBot} = require('./init');
 
+let {getDifferences, leaderboardDummy, leaderboardDummyOld} = require('./compStats');
 //import commands from botActions
-const {start, stop, help, botOrgBroadcast, timer} = require('./botActions');
+const {start, stop, help, botOrgBroadcast, unauthorised, botLeaderboard, botSendPositionChange, timer} = require('./botActions');
+const INTERVAL = 3000;
+
 start(bot, db);
-botOrgBroadcast(bot, db, teleBot)
+botOrgBroadcast(bot, db, teleBot);
+botLeaderboard(bot, db, teleBot, leaderboardDummy);
 stop(bot, db);
 help(bot);
 timer(bot, db)
+unauthorised(bot);
 
+setInterval(function(){
+  let leaderboard = leaderboardDummy;
+  let leaderboardOld = leaderboardDummyOld;
+  differences = getDifferences(leaderboard, leaderboardOld);
+  botSendPositionChange(db, teleBot, differences);
+}, INTERVAL)
 
 // sending test
 // function sendMessageEvery5sec() {
