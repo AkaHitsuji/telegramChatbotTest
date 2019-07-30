@@ -1,6 +1,5 @@
-module.exports = (bot) => {
-  bot.command('unauthorised')
-  .invoke(function(ctx) {
-    return ctx.sendMessage('You are unauthorised to do so.')
-  })
-}
+module.exports = bot => {
+  bot.command('unauthorised').invoke(ctx => {
+    return ctx.sendMessage('You are unauthorised to do so.');
+  });
+};
