@@ -22,7 +22,7 @@ const {
   botTimer,
   botMute
 } = require('./botActions');
-const INTERVAL = 3000;
+const INTERVAL = 30000;
 
 botStart(bot, db);
 botOrgBroadcast(bot, db, teleBot);

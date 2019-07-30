@@ -12,18 +12,18 @@ const getRandomInt = max => {
 };
 
 const parseTimeToString = t => {
-  let parsedString = '';
+  const parsedString = '';
   if (t > 0) {
-    const hours = parseInt(t / 3600);
-    t = t - hours * 3600;
-    const minutes = parseInt(t / 60);
-    t = t - minutes * 60;
-    const seconds = t;
+    const hours = parseInt(t / 3600000);
+    t = t - hours * 3600000;
+    const minutes = parseInt(t / 60000);
+    t = t - minutes * 60000;
+    const seconds = parseInt(t / 1000);
     if (hours > 0) {
-      parsedString = `You have ${hours}hours, ${minutes}minutes, ${seconds}seconds left! `;
+      parsedString = `You have ${hours} hours, ${minutes} minutes, ${seconds} seconds left! `;
       parsedString += encouragement(getRandomInt(4));
     } else {
-      parsedString = `There are ${minutes}minutes, ${seconds}seconds left! `;
+      parsedString = `There are ${minutes} minutes, ${seconds} seconds left! `;
       parsedString += finalMoments(getRandomInt(4));
     }
   } else {
@@ -33,9 +33,9 @@ const parseTimeToString = t => {
 };
 
 const gifToSend = t => {
-  let gifString = '';
+  const gifString = '';
   if (t > 0) {
-    const hours = parseInt(t / 3600);
+    const hours = parseInt(t / 3600000);
     if (hours > 0) {
       gifString = encouragementGIF(getRandomInt(4));
     } else {
@@ -48,32 +48,43 @@ const gifToSend = t => {
 };
 
 module.exports = (bot, db) => {
-  bot.command('startTimer').invoke(function(ctx) {
-    let username = ctx.meta.user.username;
-    let charID = ctx.meta.user.id;
-    const data = fbFunc
+  bot.command('startTimer').invoke(ctx => {
+    const username = ctx.meta.user.username;
+    fbFunc
       .checkIfusernameExists(db, username)
       .then(({ data, role }) => {
         const { chatID, name } = data;
         if (typeof chatID === 'number') {
           if (role === 'organiser') {
-            let currTime = Math.floor(Date.now() / 1000);
-            fbFunc
-              .addStartTime(db, currTime)
-              .then(msg => {
-                return ctx.sendMessage('Start time has been updated.');
-              })
-              .catch(err => {
-                console.log(err);
+            fbFunc.getStartTimeAndSetter(db).then(({ startTime, setter }) => {
+              if (setter.length > 0) {
+                const date = new Date(startTime);
                 return ctx.sendMessage(
-                  'An error occurred, please try again later.'
+                  `Start time has already been set by ${setter} to be at ${date.toString()}.`
                 );
-              });
+              } else {
+                const currTime = Math.floor(Date.now());
+                fbFunc
+                  .addStartTime(db, currTime, username)
+                  .then(_ => {
+                    const date = new Date(currTime);
+                    return ctx.sendMessage(
+                      `Start time has been set to ${date.toString()}.`
+                    );
+                  })
+                  .catch(err => {
+                    console.log(err);
+                    return ctx.sendMessage(
+                      'An error occurred, please try again later.'
+                    );
+                  });
+              }
+            });
           } else if (role === 'participant') {
             return ctx.sendMessage(errorMessage);
           }
         } else {
-          return ctx.sendMessage(NOT_REGISTERED_ERROR);
+          return ctx.sendMessage(notRegisteredError(name));
         }
       })
       .catch(error => {
@@ -82,24 +93,21 @@ module.exports = (bot, db) => {
       });
   });
 
-  bot.command('timeLeft').invoke(function(ctx) {
-    let username = ctx.meta.user.username;
-    let charID = ctx.meta.user.id;
-    const data = fbFunc
+  bot.command('timeLeft').invoke(ctx => {
+    const username = ctx.meta.user.username;
+    fbFunc
       .checkIfusernameExists(db, username)
-      .then(({ data, role }) => {
+      .then(({ data }) => {
         const { chatID, name } = data;
         if (typeof chatID === 'number') {
-          let currTime = Math.floor(Date.now() / 1000);
+          const currTime = Math.floor(Date.now());
           fbFunc.getStartTime(db).then(startTime => {
-            let timeLeft = totalCompTime - (currTime - startTime);
+            const timeLeft = totalCompTime - (currTime - startTime);
             ctx.sendMessage(parseTimeToString(timeLeft));
             return ctx.sendVideo(gifToSend(timeLeft));
           });
         } else {
-          return ctx.sendMessage(
-            `Hello ${name}, you have not been registered yet. Use the command /start to register.`
-          );
+          return ctx.sendMessage(notRegisteredError(name));
         }
       })
       .catch(error => {
@@ -110,5 +118,5 @@ module.exports = (bot, db) => {
 };
 
 const errorMessage = 'This function does not exist for this user.';
-// 24 hours in seconds
-const totalCompTime = 86400;
+// 24 hours in milliseconds
+const totalCompTime = 86400000;

@@ -63,7 +63,7 @@ module.exports.emote = id => {
   }
 };
 
-module.exports.notStarterError = name =>
+module.exports.notStartedError = name =>
   `Hello ${name}, you have not initialized me yet. Use the command /start to do so.`;
 
 module.exports.ERROR_MESSAGE = 'An error occurred, please try again later.';
