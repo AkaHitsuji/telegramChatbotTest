@@ -129,6 +129,26 @@ module.exports.getStartTimeAndSetter = async db => {
   }
 };
 
+module.exports.removeStartTime = async (db, username) => {
+  const docRef = db.collection(TIMESTAMPS).doc('compStartTime');
+  try {
+    const timeDoc = await docRef.get();
+    const data = timeDoc.data();
+    console.log(data);
+    const setter = data.setter;
+    if (username === data.setter) {
+      // can delete
+      const updated = await docRef.update({ startTime: '', setter: '' });
+      if (updated) {
+        return ''; // success
+      }
+    } else return setter;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
+
 module.exports.getTeamMembers = async (db, team) => {
   const partRef = db.collection(PARTICIPANTS).where('team', '==', team);
   try {

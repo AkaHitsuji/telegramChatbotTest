@@ -12,7 +12,7 @@ const getRandomInt = max => {
 };
 
 const parseTimeToString = t => {
-  const parsedString = '';
+  let parsedString = '';
   if (t > 0) {
     const hours = parseInt(t / 3600000);
     t = t - hours * 3600000;
@@ -33,7 +33,7 @@ const parseTimeToString = t => {
 };
 
 const gifToSend = t => {
-  const gifString = '';
+  let gifString = '';
   if (t > 0) {
     const hours = parseInt(t / 3600000);
     if (hours > 0) {
@@ -48,7 +48,7 @@ const gifToSend = t => {
 };
 
 module.exports = (bot, db) => {
-  bot.command('startTimer').invoke(ctx => {
+  bot.command('starttimer').invoke(ctx => {
     const username = ctx.meta.user.username;
     fbFunc
       .checkIfusernameExists(db, username)
@@ -60,7 +60,7 @@ module.exports = (bot, db) => {
               if (setter.length > 0) {
                 const date = new Date(startTime);
                 return ctx.sendMessage(
-                  `Start time has already been set by ${setter} to be at ${date.toString()}.`
+                  `Failed to start time. Start time has already been set by @${setter} to be at ${date.toString()}.`
                 );
               } else {
                 const currTime = Math.floor(Date.now());
@@ -93,7 +93,37 @@ module.exports = (bot, db) => {
       });
   });
 
-  bot.command('timeLeft').invoke(ctx => {
+  bot.command('removestarttime').invoke(ctx => {
+    const username = ctx.meta.user.username;
+    fbFunc
+      .checkIfusernameExists(db, username)
+      .then(({ data, role }) => {
+        const { chatID, name } = data;
+        if (typeof chatID === 'number') {
+          if (role === 'organiser') {
+            fbFunc.removeStartTime(db, username).then(setter => {
+              if (setter.length === 0) {
+                return ctx.sendMessage('Start time removed.');
+              } else {
+                return ctx.sendMessage(
+                  `Failed to remove start time. @${setter} set the time. Approach him/her to do this.`
+                );
+              }
+            });
+          } else if (role === 'participant') {
+            return ctx.sendMessage(errorMessage);
+          }
+        } else {
+          return ctx.sendMessage(notRegisteredError(name));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        ctx.sendMessage('Error occurred.');
+      });
+  });
+
+  bot.command('timeleft').invoke(ctx => {
     const username = ctx.meta.user.username;
     fbFunc
       .checkIfusernameExists(db, username)
@@ -105,6 +135,29 @@ module.exports = (bot, db) => {
             const timeLeft = totalCompTime - (currTime - startTime);
             ctx.sendMessage(parseTimeToString(timeLeft));
             return ctx.sendVideo(gifToSend(timeLeft));
+          });
+        } else {
+          return ctx.sendMessage(notRegisteredError(name));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        ctx.sendMessage('Error occurred.');
+      });
+  });
+
+  bot.command('checkstarttime').invoke(ctx => {
+    const username = ctx.meta.user.username;
+    fbFunc
+      .checkIfusernameExists(db, username)
+      .then(({ data }) => {
+        const { chatID, name } = data;
+        if (typeof chatID === 'number') {
+          fbFunc.getStartTime(db).then(startTime => {
+            const date = new Date(startTime);
+            return ctx.sendMessage(
+              `The competition started at ${date.toString()}.`
+            );
           });
         } else {
           return ctx.sendMessage(notRegisteredError(name));
