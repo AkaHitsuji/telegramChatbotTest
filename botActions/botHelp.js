@@ -12,9 +12,9 @@ module.exports = (bot, db) => {
         console.log(data);
         if (typeof chatID === 'number') {
           if (role === 'organiser') {
-            return ctx.sendMessage(organiserHelpMessage);
+            return ctx.sendMessage(organiserHelpMessage, {parse_mode: 'Markdown'});
           } else if (role === 'participant') {
-            return ctx.sendMessage(participantHelpMessage);
+            return ctx.sendMessage(participantHelpMessage,{parse_mode: 'Markdown'});
           }
         } else {
           return ctx.sendMessage(notStartedError(name));
