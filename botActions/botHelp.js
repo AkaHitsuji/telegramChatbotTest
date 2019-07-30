@@ -1,5 +1,5 @@
 const fbFunc = require('../firebaseFunctions.js');
-const { notStartedError, ERROR_MESSAGE, PARTICIPANT_HELP_MESSAGE } = require('./constants');
+const { notStartedError, ERROR_MESSAGE, PARTICIPANT_HELP_MESSAGE, ORGANIZER_HELP_MESSAGE } = require('./constants');
 
 module.exports = (bot, db) => {
   ///start command
@@ -27,5 +27,5 @@ module.exports = (bot, db) => {
   });
 };
 
-const organiserHelpMessage = 'asdf';
+const organiserHelpMessage = ORGANIZER_HELP_MESSAGE;
 const participantHelpMessage = PARTICIPANT_HELP_MESSAGE;
