@@ -1,44 +1,51 @@
 const fbFunc = require('../firebaseFunctions');
 
 //wrapper function to run sleep in array.map
-const sleep = (ms) => {
+const sleep = ms => {
   return new Promise(resolve => {
-    setTimeout(resolve, ms)
-  })
-}
+    setTimeout(resolve, ms);
+  });
+};
 //wraps asynchronous sendMessage function so that we can use it in main body
 const sendMessage = async (teleBot, ids, message) => {
   const idArray = ids.map(async id => {
-    const {mute, chatID} = id
-    await sleep(300)
-    return await teleBot.sendMessage(chatID, message, {disable_notification: mute})
-  })
+    const { mute, chatID } = id;
+    await sleep(300);
+    return await teleBot.sendMessage(chatID, message, {
+      disable_notification: mute
+    });
+  });
   return await Promise.all(idArray);
-}
+};
 
 module.exports = (bot, db, teleBot) => {
-  bot.command('broadcast')
-  .invoke(function(ctx) {
-    let username = ctx.meta.user.username;
+  bot
+    .command('broadcast')
+    .invoke(function(ctx) {
+      let username = ctx.meta.user.username;
 
-    fbFunc.checkIfOrganiser(db, username).then(res => {
-      if (res) return ctx.sendMessage(`Hello ${username}, please type your broadcast text.`)
-      else {
-        ctx.go('unauthorized')
-      }
+      fbFunc.checkIfOrganiser(db, username).then(res => {
+        if (res)
+          return ctx.sendMessage(
+            `Hello ${username}, please type your broadcast text.`
+          );
+        else {
+          ctx.go('unauthorized');
+        }
+      });
     })
-  })
-  .answer(function(ctx) {
-    const message = ctx.data.answer;
-    // cannot send message to multiple people on answer, hence we redirect to another command
-    return ctx.go('broadcast_forward')
-  })
+    .answer(function(ctx) {
+      const message = ctx.data.answer;
+      // cannot send message to multiple people on answer, hence we redirect to another command
+      return ctx.go('broadcast_forward');
+    });
 
   // the command that invokes the function to send messages to multiple people
-  bot.command('broadcast_forward')
-  .invoke(function(ctx) {
+  bot.command('broadcast_forward').invoke(function(ctx) {
     fbFunc.getParticipantList(db).then(res => {
-      sendMessage(teleBot, res, ctx.message.text).then(res => ctx.sendMessage('Broadcast sent.'))
-    })
-  })
-}
+      sendMessage(teleBot, res, ctx.message.text).then(res =>
+        ctx.sendMessage('Broadcast sent.')
+      );
+    });
+  });
+};
