@@ -7,3 +7,4 @@ module.exports.botUnauthorised = require('./botUnauthorised');
 module.exports.botLeaderboard = require('./botLeaderboard');
 module.exports.botSendPositionChange = require('./botSendPositionChange');
 module.exports.botMute = require('./botMute');
+module.exports.botAboutMe = require('./botAboutMe');

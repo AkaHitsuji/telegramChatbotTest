@@ -73,3 +73,5 @@ module.exports.ORGANIZER_HELP_MESSAGE =
 
 module.exports.PARTICIPANT_HELP_MESSAGE =
   '*Hello CodeIT Suisse organizer, welcome to askCodiBot!* \n My supported commands are: \n /start - register for CodeIT Suisse\n /help - provides details about available functions \n /timeleft - check time left for competition \n /mute - disable push notifications\n /leaderboard - View competition leaderboard\n /stats - retrieve team statistics (e.g position, number of submissions etc.)\n /feedback - trigger feedback form after competition is over \n /stop - Removes your account from database. You will no longer receive any updates\n /checkstarttime - Check when the competition started';
+
+module.exports.ABOUT_ME_MESSAGE = "hElLO mY nAme iS cOdI. \n My makers are Ang Yang, Chuan De Sheng, See Jie Xun and Lim Dao Han."

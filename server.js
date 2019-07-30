@@ -20,7 +20,8 @@ const {
   botLeaderboard,
   botSendPositionChange,
   botTimer,
-  botMute
+  botMute,
+  botAboutMe
 } = require('./botActions');
 const INTERVAL = 30000;
 
@@ -32,6 +33,7 @@ botHelp(bot, db);
 botTimer(bot, db);
 botUnauthorised(bot);
 botMute(bot, db);
+botAboutMe(bot,db);
 // call backend to get leaderboard. set as leaderboardOld.
 setInterval(function() {
   let leaderboard = leaderboardDummy;
