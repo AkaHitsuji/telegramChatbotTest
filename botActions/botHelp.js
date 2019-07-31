@@ -9,7 +9,6 @@ module.exports = (bot, db) => {
       .checkIfusernameExists(db, username)
       .then(({ data, role }) => {
         const { chatID, name } = data;
-        console.log(data);
         if (typeof chatID === 'number') {
           if (role === 'organiser') {
             return ctx.sendMessage(organiserHelpMessage, {parse_mode: 'Markdown'});
