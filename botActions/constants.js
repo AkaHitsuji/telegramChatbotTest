@@ -29,9 +29,9 @@ module.exports.encouragementGIF = id => {
     case 0:
       return 'https://media.giphy.com/media/l0G17RknJuOlxnFO8/giphy.gif';
     case 1:
-      return 'https://media.giphy.com/media/a2SR6Ag8ChUlO/giphy.gif';
+      return 'https://media.giphy.com/media/9u514UZd57mRhnBCEk/giphy.gif';
     case 2:
-      return 'https://media.giphy.com/media/hsGo8cKagvvSE/giphy.gif';
+      return 'https://media.giphy.com/media/1XdfVRTyn5d31Q1lG0/giphy.gif';
     case 3:
       return 'https://media.giphy.com/media/fUwOs80ja3sTPpjndh/giphy.gif';
   }
