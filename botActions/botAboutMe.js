@@ -4,7 +4,7 @@ const { notStartedError, ERROR_MESSAGE, ABOUT_ME_MESSAGE } = require('./constant
 module.exports = (bot,db) => {
   ///start command
   bot.command('aboutMe').invoke(ctx => {
-    let username = ctx.meta.user.username;
+    const username = ctx.meta.user.username;
     fbFunc
       .checkIfusernameExists(db, username)
       .then(({ data, role }) => {

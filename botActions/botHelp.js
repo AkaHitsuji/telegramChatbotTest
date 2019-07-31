@@ -4,7 +4,7 @@ const { notStartedError, ERROR_MESSAGE, PARTICIPANT_HELP_MESSAGE, ORGANIZER_HELP
 module.exports = (bot, db) => {
   ///start command
   bot.command('help').invoke(ctx => {
-    let username = ctx.meta.user.username;
+    const username = ctx.meta.user.username;
     fbFunc
       .checkIfusernameExists(db, username)
       .then(({ data, role }) => {

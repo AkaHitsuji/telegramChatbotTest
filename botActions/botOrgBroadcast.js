@@ -1,6 +1,7 @@
 const fbFunc = require('../firebaseFunctions');
 const Utils = require('./Utils');
 const { notStartedError, AUTHORIZATION_ERROR_MESSAGE } = require('./constants');
+const totalCompTime = 86400000;
 
 //wrapper function to run sleep in array.map
 const sleep = ms => {
@@ -50,7 +51,7 @@ module.exports = (bot, db, teleBot) => {
 
   // the command for organizers that invokes the function to send time left to participants
   bot.command('broadcast_timeleft').invoke(function(ctx) {
-    var participantList = fbFunc.getParticipantList(db);
+    const username = ctx.meta.user.username;
     fbFunc
       .checkIfusernameExists(db, username)
       .then(({data, role}) => {
@@ -60,8 +61,13 @@ module.exports = (bot, db, teleBot) => {
             const currTime = Math.floor(Date.now());
             fbFunc.getStartTime(db).then(startTime => {
               const timeLeft = totalCompTime - (currTime - startTime);
-              sendMessage(teleBot, participantList, Utils.parseTimeToString(timeLeft));
-              return ctx.sendVideo(gifToSend(timeLeft));
+              fbFunc
+                .getParticipantList(db)
+                .then(participantList => {
+                  console.log(participantList);
+                  sendMessage(teleBot, participantList, Utils.parseTimeToString(timeLeft))
+                  //return ctx.sendVideo(Utils.gifToSend(timeLeft));
+                })
             });
           } else if (role === 'participant') {
             return ctx.sendMessage(AUTHORIZATION_ERROR_MESSAGE);
