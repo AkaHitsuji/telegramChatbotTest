@@ -1,4 +1,5 @@
 const fbFunc = require('../firebaseFunctions');
+const Utils = require('./Utils');
 const { notStartedError, AUTHORIZATION_ERROR_MESSAGE } = require('./constants');
 
 //wrapper function to run sleep in array.map
@@ -59,7 +60,7 @@ module.exports = (bot, db, teleBot) => {
             const currTime = Math.floor(Date.now());
             fbFunc.getStartTime(db).then(startTime => {
               const timeLeft = totalCompTime - (currTime - startTime);
-              sendMessage(teleBot, participantList, parseTimeToString(timeLeft));
+              sendMessage(teleBot, participantList, Utils.parseTimeToString(timeLeft));
               return ctx.sendVideo(gifToSend(timeLeft));
             });
           } else if (role === 'participant') {

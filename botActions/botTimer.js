@@ -1,28 +1,8 @@
 const fbFunc = require('../firebaseFunctions');
 const Utils = require('./Utils')
-const {
-  encouragementGIF,
-  finalMomentsGif,
-  notRegisteredError
-} = require('./constants');
-
+const { notRegisteredError } = require('./constants');
 const getRandomInt = max => {
   return Math.floor(Math.random() * Math.floor(max));
-};
-
-const gifToSend = t => {
-  let gifString = '';
-  if (t > 0) {
-    const hours = parseInt(t / 3600000);
-    if (hours > 0) {
-      gifString = encouragementGIF(getRandomInt(4));
-    } else {
-      gifString = finalMomentsGif(getRandomInt(4));
-    }
-  } else {
-    gifString = 'https://media.giphy.com/media/3o7qDEq2bMbcbPRQ2c/giphy.gif';
-  }
-  return gifString;
 };
 
 module.exports = (bot, db) => {
@@ -112,7 +92,7 @@ module.exports = (bot, db) => {
           fbFunc.getStartTime(db).then(startTime => {
             const timeLeft = totalCompTime - (currTime - startTime);
             ctx.sendMessage(Utils.parseTimeToString(timeLeft));
-            return ctx.sendVideo(gifToSend(timeLeft));
+            return ctx.sendVideo(Utils.gifToSend(timeLeft));
           });
         } else {
           return ctx.sendMessage(notRegisteredError(name));
